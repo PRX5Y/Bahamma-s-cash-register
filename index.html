@@ -4,141 +4,214 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cash Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <style>
     body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-}
+      font-family: 'Overpass', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      margin: 0;
+      position: relative;
+      overflow: hidden;
+    }
 
-.container {
-  width: 80%;
-  text-align: center;
-}
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+    }
 
-.register {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .container {
+      width: 80%;
+      text-align: center;
+      z-index: 1;
+      backdrop-filter: blur(5px);
+    }
 
-.display {
-  width: 30%;
-  margin-bottom: 20px;
-}
+    .register {
+      background-color: #1e1e1e42;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
 
-#display {
-  width: 100%;
-  padding: 10px;
-  font-size: 24px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+    .display-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-.categories {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  width: 100%;
-}
+    .display {
+      width: 200px;
+      margin-right: 10px;
+    }
 
-.category {
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  flex: 1;
-  min-width: 200px;
-}
+    #display {
+      width: 100%;
+      padding: 10px;
+      font-size: 24px;
+      text-align: center;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background-color: #333;
+      color: #ffffff;
+    }
 
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
+    .history {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+    }
 
-.btn {
-  padding: 20px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
+    #historyList {
+      list-style-type: none;
+      padding: 0;
+    }
 
-.btn:hover {
-  background-color: #0056b3;
-}
+    .categories {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 100%;
+    }
 
-h2 {
-  margin-top: 20px;
-}
+    .category {
+      background-color: #2a2a2a3b;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      margin: 10px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      font-family: 'Overpass', sans-serif;
+      padding: 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #7700ff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #3f0086;
+    }
+
+    .discount-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+
+    .discount-message {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #ff0000;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
+  <div class="background"></div>
   <div class="container">
-    <h1>Lucys Shitty looking Cash Register For Bahama mamas</h1>
-    I will update it soon to look nicer <3
+    <h1>Lucys Cash Register For Bahama mamas</h1>
+    Only click the discount buttons at the end of the order, just to make sure the discount is applied correctly.
     <div class="register">
-      <div class="display">
-        <input type="text" id="display" readonly>
+      <div class="display-container">
+        <div class="display">
+          <input type="text" id="display" readonly>
+        </div>
+        <button class="btn" onclick="clearDisplay()">Clear</button>
       </div>
+      <div class="discount-buttons">
+        <button class="btn" onclick="applyDiscount('DOJ')">DOJ</button>
+        <button class="btn" onclick="applyDiscount('SAMS')">SAMS</button>
+        <button class="btn" onclick="applyDiscount('SASP')">SASP</button>
+        <button class="btn" onclick="applyDiscount('BCSO')">BCSO</button>
+      </div>
+      <div class="discount-message" id="discountMessage"></div>
       <div class="categories">
+        <div class="category">
+          <div class="history">
+            <h2>Order History</h2>
+            <ul id="historyList"></ul>
+          </div>
+        </div>
         <div class="category">
           <h2>Food Items</h2>
           <div class="buttons">
-            <button class="btn" onclick="addItem('Cheese Pizza Slice')">Cheese Pizza Slice</button>
-            <button class="btn" onclick="addItem('Peperoni Pizza Slice')">Peperoni Pizza Slice</button>
-            <button class="btn" onclick="addItem('Thicc PB&J')">Thicc PB&J</button>
-            <button class="btn" onclick="addItem('Spicy Nachos')">Spicy Nachos</button>
-            <button class="btn" onclick="addItem('Steak and potatoes')">Steak and potatoes</button>
-            <button class="btn" onclick="addItem('Rainbow Cocktail')">Rainbow Cocktail</button>
+            <button class="btn" onclick="addItem('Cheese Pizza Slice')">🍕 Cheese Pizza Slice</button>
+            <button class="btn" onclick="addItem('Peperoni Pizza Slice')">🍕 Peperoni Pizza Slice</button>
+            <button class="btn" onclick="addItem('Thicc PB&J')">🥪 Thicc PB&J</button>
+            <button class="btn" onclick="addItem('Spicy Nachos')">🌶️ Spicy Nachos</button>
+            <button class="btn" onclick="addItem('Steak and potatoes')">🥩 Steak and potatoes</button>
           </div>
         </div>
         <div class="category">
           <h2>Non-Alcoholic</h2>
           <div class="buttons">
-            <button class="btn" onclick="addItem('Lemon Tea')">Lemon Tea</button>
-            <button class="btn" onclick="addItem('Coffee')">Coffee</button>
-            <button class="btn" onclick="addItem('Detox')">Detox</button>
-            <button class="btn" onclick="addItem('Rainbow Slushie')">Rainbow Slushie</button>
+            <button class="btn" onclick="addItem('Lemon Tea')">🍋 Lemon Tea</button>
+            <button class="btn" onclick="addItem('Coffee')">☕ Coffee</button>
+            <button class="btn" onclick="addItem('Detox')">🍵 Detox</button>
+            <button class="btn" onclick="addItem('Rainbow Slushie')">🍧 Rainbow Slushie</button>
           </div>
         </div>
         <div class="category">
           <h2>Alcohol</h2>
           <div class="buttons">
-            <button class="btn" onclick="addItem('Whisky')">Whisky</button>
-            <button class="btn" onclick="addItem('Mezcal')">Mezcal</button>
-            <button class="btn" onclick="addItem('Vodka')">Vodka</button>
-            <button class="btn" onclick="addItem('Absinthe')">Absinthe</button>
-            <button class="btn" onclick="addItem('Tequila')">Tequila</button>
-            <button class="btn" onclick="addItem('Dark Rum')">Dark Rum</button>
+            <button class="btn" onclick="addItem('Whisky')">🥃 Whisky</button>
+            <button class="btn" onclick="addItem('Rainbow Cocktail')">🍹 Rainbow Cocktail</button>
+            <button class="btn" onclick="addItem('Mezcal')">🍸 Mezcal</button>
+            <button class="btn" onclick="addItem('Vodka')">🍸 Vodka</button>
+            <button class="btn" onclick="addItem('Absinthe')">🍸 Absinthe</button>
+            <button class="btn" onclick="addItem('Tequila')">🍸 Tequila</button>
+            <button class="btn" onclick="addItem('Dark Rum')">🍸 Dark Rum</button>
           </div>
         </div>
         <div class="category">
           <h2>Specials</h2>
           <div class="buttons">
-            <button class="btn" onclick="addItem('Throcks Mayo Round')">Throcks Mayo Round</button>
-            <button class="btn" onclick="addItem('Slice of Santana')">Slice of Santana</button>
-            <button class="btn" onclick="addItem('Sex on the Erik')">Sex on the Erik</button>
-            <button class="btn" onclick="addItem('Essence of Sammy')">Essence of Sammy</button>
+            <button class="btn" onclick="addItem('Throcks Mayo Round')">🍹 Throcks Mayo Round</button>
+            <button class="btn" onclick="addItem('Slice of Santana')">🍕 Slice of Santana</button>
+            <button class="btn" onclick="addItem('Sex on the Erik')">🍹 Sex on the Erik</button>
+            <button class="btn" onclick="addItem('Essence of Sammy')">🍹 Essence of Sammy</button>
           </div>
         </div>
       </div>
-      <button class="btn" onclick="clearDisplay()">Clear</button>
     </div>
   </div>
   <script>
@@ -165,17 +238,100 @@ h2 {
       'Essence of Sammy': 90
     };
 
+    const discounts = {
+      'DOJ': 10,
+      'SAMS': 15,
+      'SASP': 20,
+      'BCSO': 25
+    };
+
+    let currentDiscountType = null;
+
+    const backgroundImages = [
+      'url("https://femboy.beauty/d86kB.jpg")',
+      'url("https://femboy.beauty/HrCrn.jpg")',
+      'url("https://femboy.beauty/PZRJ3.jpg")'
+    ];
+
+    function setRandomBackground() {
+      const background = document.querySelector('.background');
+      const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+      background.style.backgroundImage = randomImage;
+    }
+
     function addItem(item) {
       const display = document.getElementById('display');
-      const currentTotal = parseFloat(display.value) || 0;
+      const currentTotal = parseFloat(display.value.replace('$', '')) || 0;
       const itemPrice = prices[item];
-      display.value = (currentTotal + itemPrice).toFixed(2);
+      display.value = `$${roundUp(currentTotal + itemPrice)}`;
+
+      // Add item to history
+      const historyList = document.getElementById('historyList');
+      const existingItem = document.querySelector(`#historyList li[data-item="${item}"]`);
+
+      if (existingItem) {
+        const quantity = parseInt(existingItem.getAttribute('data-quantity')) + 1;
+        existingItem.setAttribute('data-quantity', quantity);
+        existingItem.textContent = `${quantity}x ${item}`;
+      } else {
+        const listItem = document.createElement('li');
+        listItem.setAttribute('data-item', item);
+        listItem.setAttribute('data-quantity', 1);
+        listItem.textContent = `1x ${item}`;
+        historyList.appendChild(listItem);
+      }
+
+      // Reapply discount if any
+      if (currentDiscountType) {
+        reapplyDiscount();
+      }
+    }
+
+    function applyDiscount(type) {
+      if (currentDiscountType) {
+        alert('Only one discount can be applied per order.');
+        return;
+      }
+
+      currentDiscountType = type;
+      reapplyDiscount();
+    }
+
+    function reapplyDiscount() {
+      const display = document.getElementById('display');
+      const currentTotal = parseFloat(display.value.replace('$', '')) || 0;
+      const discountPercentage = discounts[currentDiscountType];
+      const discountAmount = (currentTotal * (discountPercentage / 100)).toFixed(2);
+      const newTotal = currentTotal - discountAmount;
+      display.value = `$${roundUp(newTotal)}`;
+
+      // Display discount message
+      const discountMessage = document.getElementById('discountMessage');
+      discountMessage.textContent = `A ${currentDiscountType} discount of ${discountPercentage}% ($${discountAmount}) has been applied.`;
     }
 
     function clearDisplay() {
       const display = document.getElementById('display');
       display.value = '';
+
+      // Clear history
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+
+      // Clear discount message
+      const discountMessage = document.getElementById('discountMessage');
+      discountMessage.textContent = '';
+
+      // Clear current discount type
+      currentDiscountType = null;
     }
+
+    function roundUp(value) {
+      return Math.ceil(value);
+    }
+
+    // Set a random background image on page load
+    window.onload = setRandomBackground;
   </script>
 </body>
 </html>
