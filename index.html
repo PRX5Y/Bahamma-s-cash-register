@@ -39,6 +39,14 @@
       text-align: center;
       z-index: 1;
       backdrop-filter: blur(5px);
+      overflow-y: auto;
+      max-height: 100vh;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+
+    .container::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
     }
 
     .register {
@@ -125,12 +133,10 @@
     }
 
     .discount-buttons {
-      position: absolute;
-      top: 10px;
-      right: 10px;
       display: flex;
       flex-direction: row;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
     .discount-message {
@@ -143,6 +149,56 @@
     h2 {
       margin-top: 20px;
     }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto;
+      }
+
+      .register {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        box-shadow: none;
+      }
+
+      .display-container {
+        flex-direction: column;
+      }
+
+      .display {
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .discount-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .discount-message {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+      }
+
+      .category {
+        margin: 5px 0;
+      }
+
+      .buttons {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
@@ -151,17 +207,17 @@
     <h1>Lucys Cash Register For Bahama mamas</h1>
     Only click the discount buttons at the end of the order, just to make sure the discount is applied correctly.
     <div class="register">
+      <div class="discount-buttons">
+        <button class="btn" onclick="applyDiscount('DOC')">DOC<br>(0%)</button>
+        <button class="btn" onclick="applyDiscount('SAMS')">SAMS<br>(0%)</button>
+        <button class="btn" onclick="applyDiscount('SASP')">SASP<br>(0%)</button>
+        <button class="btn" onclick="applyDiscount('BCSO')">BCSO<br>(0%)</button>
+      </div>
       <div class="display-container">
         <div class="display">
           <input type="text" id="display" readonly>
         </div>
         <button class="btn" onclick="clearDisplay()">Clear</button>
-      </div>
-      <div class="discount-buttons">
-        <button class="btn" onclick="applyDiscount('DOJ')">DOJ</button>
-        <button class="btn" onclick="applyDiscount('SAMS')">SAMS</button>
-        <button class="btn" onclick="applyDiscount('SASP')">SASP</button>
-        <button class="btn" onclick="applyDiscount('BCSO')">BCSO</button>
       </div>
       <div class="discount-message" id="discountMessage"></div>
       <div class="categories">
@@ -239,10 +295,10 @@
     };
 
     const discounts = {
-      'DOJ': 10,
-      'SAMS': 15,
-      'SASP': 20,
-      'BCSO': 25
+      'DOC': 0,
+      'SAMS': 0,
+      'SASP': 0,
+      'BCSO': 0
     };
 
     let currentDiscountType = null;
