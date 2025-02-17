@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash Register</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+}
+
+.container {
+  width: 80%;
+  text-align: center;
+}
+
+.register {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.display {
+  width: 30%;
+  margin-bottom: 20px;
+}
+
+#display {
+  width: 100%;
+  padding: 10px;
+  font-size: 24px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.categories {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.category {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+h2 {
+  margin-top: 20px;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lucys Shitty looking Cash Register For Bahamma mamas</h1>
+    I will update it soon to look nicer <3
+    <div class="register">
+      <div class="display">
+        <input type="text" id="display" readonly>
+      </div>
+      <div class="categories">
+        <div class="category">
+          <h2>Food Items</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('Cheese Pizza Slice')">Cheese Pizza Slice</button>
+            <button class="btn" onclick="addItem('Peperoni Pizza Slice')">Peperoni Pizza Slice</button>
+            <button class="btn" onclick="addItem('Thicc PB&J')">Thicc PB&J</button>
+            <button class="btn" onclick="addItem('Spicy Nachos')">Spicy Nachos</button>
+            <button class="btn" onclick="addItem('Steak and potatoes')">Steak and potatoes</button>
+            <button class="btn" onclick="addItem('Rainbow Cocktail')">Rainbow Cocktail</button>
+          </div>
+        </div>
+        <div class="category">
+          <h2>Non-Alcoholic</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('Lemon Tea')">Lemon Tea</button>
+            <button class="btn" onclick="addItem('Coffee')">Coffee</button>
+            <button class="btn" onclick="addItem('Detox')">Detox</button>
+            <button class="btn" onclick="addItem('Rainbow Slushie')">Rainbow Slushie</button>
+          </div>
+        </div>
+        <div class="category">
+          <h2>Alcohol</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('Whisky')">Whisky</button>
+            <button class="btn" onclick="addItem('Mezcal')">Mezcal</button>
+            <button class="btn" onclick="addItem('Vodka')">Vodka</button>
+            <button class="btn" onclick="addItem('Absinthe')">Absinthe</button>
+            <button class="btn" onclick="addItem('Tequila')">Tequila</button>
+            <button class="btn" onclick="addItem('Dark Rum')">Dark Rum</button>
+          </div>
+        </div>
+        <div class="category">
+          <h2>Specials</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('Throcks Mayo Round')">Throcks Mayo Round</button>
+            <button class="btn" onclick="addItem('Slice of Santana')">Slice of Santana</button>
+            <button class="btn" onclick="addItem('Sex on the Erik')">Sex on the Erik</button>
+            <button class="btn" onclick="addItem('Essence of Sammy')">Essence of Sammy</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn" onclick="clearDisplay()">Clear</button>
+    </div>
+  </div>
+  <script>
+    const prices = {
+      'Cheese Pizza Slice': 30,
+      'Peperoni Pizza Slice': 30,
+      'Thicc PB&J': 40,
+      'Spicy Nachos': 50,
+      'Steak and potatoes': 50,
+      'Rainbow Cocktail': 100,
+      'Lemon Tea': 30,
+      'Coffee': 30,
+      'Detox': 40,
+      'Rainbow Slushie': 50,
+      'Whisky': 30,
+      'Mezcal': 30,
+      'Vodka': 30,
+      'Absinthe': 30,
+      'Tequila': 30,
+      'Dark Rum': 30,
+      'Throcks Mayo Round': 100,
+      'Slice of Santana': 60,
+      'Sex on the Erik': 150,
+      'Essence of Sammy': 90
+    };
+
+    function addItem(item) {
+      const display = document.getElementById('display');
+      const currentTotal = parseFloat(display.value) || 0;
+      const itemPrice = prices[item];
+      display.value = (currentTotal + itemPrice).toFixed(2);
+    }
+
+    function clearDisplay() {
+      const display = document.getElementById('display');
+      display.value = '';
+    }
+  </script>
+</body>
+</html>
