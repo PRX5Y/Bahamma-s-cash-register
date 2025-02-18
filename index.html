@@ -347,6 +347,7 @@
         const quantity = parseInt(existingItem.getAttribute('data-quantity')) + 1;
         existingItem.setAttribute('data-quantity', quantity);
         existingItem.textContent = `${quantity}x ${item}`;
+        existingItem.appendChild(createRemoveButton(item));
       } else {
         const listItem = document.createElement('li');
         listItem.setAttribute('data-item', item);
