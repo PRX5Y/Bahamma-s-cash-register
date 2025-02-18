@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ingredients Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Overpass', sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      overflow-y: hidden; /* Prevent vertical scrolling */
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      width: 80%;
+      text-align: center;
+      z-index: 1;
+      backdrop-filter: blur(5px);
+      overflow-y: auto;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      max-height: 100vh;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+
+    .container::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
+    }
+
+    .register {
+      background-color: #1e1e1e42;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .display-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .history {
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+      max-height: 100%; /* Set a max height for the scrollable area */
+      overflow-y: auto; /* Enable vertical scrolling */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+
+    .history::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
+    }
+
+    #historyList {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #historyList li {
+      margin-bottom: 10px; /* Add space between each food item */
+    }
+
+    .categories {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .category {
+      background-color: #2a2a2a3b;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      margin: 10px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      font-family: 'Overpass', sans-serif;
+      padding: 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #7700ff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #3f0086;
+    }
+
+    .discount-message {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #ff0000;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto;
+      }
+
+      .register {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        box-shadow: none;
+      }
+
+      .display-container {
+        flex-direction: column;
+        order: 2;
+      }
+
+      .btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .discount-message {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+      }
+
+      .category {
+        margin: 5px 0;
+      }
+
+      .buttons {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="container">
+    <h1>Lucys Ingredients Calculator For Bahama mamas</h1>
+    <div class="register">
+      <div class="display-container">
+        <button class="btn" onclick="openCalculator()">Cash Register</button> &nbsp;
+        <button class="btn" onclick="clearDisplay()">Clear</button>
+      </div>
+      <div class="categories">
+        <div class="category">
+          <div class="history">
+            <h2>Item Details</h2>
+            <ul id="historyList"></ul>
+          </div>
+        </div>
+        <div class="category">
+          <h2>Ingredients Total</h2>
+          <ul id="ingredientsTotal"></ul>
+        </div>
+        <div class="category">
+          <h2>Drinks</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('Lemon Tea')">🍋 Lemon Tea</button>
+            <button class="btn" onclick="addItem('Coffee')">☕ Coffee</button>
+            <button class="btn" onclick="addItem('Rainbow Slushie')">🍧 Rainbow Slushie</button>
+            <button class="btn" onclick="addItem('Rainbow Cocktail')">🍹 Rainbow Cocktail</button>
+            <button class="btn" onclick="addItem('Hot Chocolate (Titty Milk)')">🍫 Hot Chocolate (Titty Milk)</button>
+          </div>
+        </div>
+        <div class="category">
+          <h2>Food Items</h2>
+          <div class="buttons">
+            <button class="btn" onclick="addItem('THICC PB&J')">🥪 THICC PB&J</button>
+            <button class="btn" onclick="addItem('Pepperoni Pizza')">🍕 Pepperoni Pizza</button>
+            <button class="btn" onclick="addItem('SPICY Nachos')">🌶️ SPICY Nachos</button>
+            <button class="btn" onclick="addItem('Steak & Potatoes')">🥩 Steak & Potatoes</button>
+            <button class="btn" onclick="addItem('Chocolate Strawberries')">🍓 Chocolate Strawberries</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const ingredients = {
+      'Lemon Tea': ['1 Lemon Tea bag', '1 Water', 'Makes 2'],
+      'Coffee': ['1 Coffee Ground', '1 Water', 'Makes 1'],
+      'Rainbow Slushie': ['4 Ice cubes', '1 Cup Sugar', 'Makes 1'],
+      'Hot Chocolate (Titty Milk)': ['1 Glass of Milk', '1 Water', '1 Milk Chocolate Square', 'Makes 2'],
+      'Rainbow Cocktail': ['2 Vodka glasses', '1 Glass of Prosecco', '4 Sliced Pineapple', '1 Mango Slice', '2 Orange slice', '2 Marashino Cherries', 'Makes 2'],
+      'THICC PB&J': ['1 Bread Slice', '1 Peanut Butter', '1 Jelly', 'Makes 1'],
+      'Pepperoni Pizza': ['1 Bread Dough', '1 Marana Sauce', '1 Mozzerella Cheese', '1 Pepperoni Slices', 'Makes 8'],
+      'SPICY Nachos': ['2 Tortilla Chips', '1 Can Beans', '1 Sour Cream', '2 Jalepenos', '1 Scallions', '1 Colby Jack', 'Makes 5'],
+      'Steak & Potatoes': ['1 Raw Beef', '3 Potatoes', '1 Tomato', 'Makes 2'],
+      'Chocolate Strawberries': ['6 Strawberries', '1 Dark Chocolate', 'Makes 2']
+    };
+
+    const backgroundImages = [
+      'url("https://femboy.beauty/d86kB.jpg")',
+      'url("https://femboy.beauty/HrCrn.jpg")',
+      'url("https://femboy.beauty/PZRJ3.jpg")'
+    ];
+
+    const totalIngredients = {};
+
+    function setRandomBackground() {
+      const background = document.querySelector('.background');
+      const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+      background.style.backgroundImage = randomImage;
+    }
+
+    function addItem(item) {
+      const historyList = document.getElementById('historyList');
+      const itemIngredients = ingredients[item];
+
+      if (itemIngredients) {
+        const existingItem = document.querySelector(`#historyList li[data-item="${item}"]`);
+        if (existingItem) {
+          const quantity = parseInt(existingItem.getAttribute('data-quantity')) + 1;
+          existingItem.setAttribute('data-quantity', quantity);
+          existingItem.textContent = `${item}: ${itemIngredients.slice(0, -1).join(', ')} (x${quantity})`;
+          const makesItem = document.querySelector(`#historyList li[data-item="${item}-makes"]`);
+          makesItem.textContent = `This makes ${quantity * parseInt(itemIngredients[itemIngredients.length - 1].split(' ')[1])}`;
+        } else {
+          const listItem = document.createElement('li');
+          listItem.setAttribute('data-item', item);
+          listItem.setAttribute('data-quantity', 1);
+          listItem.textContent = `${item}: ${itemIngredients.slice(0, -1).join(', ')} (x1)`;
+          historyList.appendChild(listItem);
+
+          const makesItem = document.createElement('li');
+          makesItem.setAttribute('data-item', `${item}-makes`);
+          makesItem.textContent = `This makes ${itemIngredients[itemIngredients.length - 1]}`;
+          historyList.appendChild(makesItem);
+        }
+
+        updateTotalIngredients(itemIngredients, 1);
+      } else {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item}: No ingredients information available.`;
+        historyList.appendChild(listItem);
+      }
+    }
+
+    function updateTotalIngredients(itemIngredients, quantity) {
+      const ingredientsTotal = document.getElementById('ingredientsTotal');
+
+      itemIngredients.slice(0, -1).forEach(ingredient => {
+        const [amount, ...nameParts] = ingredient.split(' ');
+        const name = nameParts.join(' ');
+        const totalAmount = parseInt(amount) * quantity;
+
+        if (totalIngredients[name]) {
+          totalIngredients[name] += totalAmount;
+        } else {
+          totalIngredients[name] = totalAmount;
+        }
+      });
+
+      ingredientsTotal.innerHTML = '';
+      for (const [name, totalAmount] of Object.entries(totalIngredients)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${totalAmount} ${name}`;
+        ingredientsTotal.appendChild(listItem);
+      }
+    }
+
+    function clearDisplay() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+
+      const ingredientsTotal = document.getElementById('ingredientsTotal');
+      ingredientsTotal.innerHTML = '';
+
+      for (const key in totalIngredients) {
+        delete totalIngredients[key];
+      }
+    }
+
+    function openCalculator() {
+      window.location.href = 'https://cash-register.pryzum.net';
+    }
+
+    window.onload = setRandomBackground;
+  </script>
+</body>
+</html>

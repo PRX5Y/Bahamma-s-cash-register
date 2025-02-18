@@ -65,7 +65,9 @@
     .display-container {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       margin-bottom: 20px;
+      width: 100%;
     }
 
     .display {
@@ -212,6 +214,7 @@
     Only click the discount buttons at the end of the order, just to make sure the discount is applied correctly.
     <div class="register">
       <div class="display-container">
+        <button class="btn" onclick="openCalculator()">Food Calculator</button>
         <div class="display">
           <input type="text" id="display" readonly>
         </div>
@@ -390,11 +393,12 @@
       return Math.ceil(value);
     }
 
+    function openCalculator() {
+      window.location.href = 'https://cash-register.pryzum.net/food-calculator';
+    }
+
     // Set a random background image on page load
     window.onload = setRandomBackground;
   </script>
 </body>
 </html>
-
-
-
