@@ -227,7 +227,7 @@
       <div class="display-container">
         <button class="btn" onclick="openCalculator()">Food Calculator</button>
         <div class="display">
-          <input type="text" id="display" readonly>
+          <input type="text" id="display" value="$0" readonly>
         </div>
         <button class="btn" onclick="clearDisplay()">Clear</button>
       </div>
@@ -429,7 +429,7 @@
 
     function clearDisplay() {
       const display = document.getElementById('display');
-      display.value = '';
+      display.value = '$0';
 
       // Clear history
       const historyList = document.getElementById('historyList');
@@ -452,7 +452,10 @@
     }
 
     // Set a random background image on page load
-    window.onload = setRandomBackground;
+    window.onload = () => {
+      setRandomBackground();
+      clearDisplay(); // Reset the display to $0 on page load
+    };
   </script>
 </body>
 </html>
