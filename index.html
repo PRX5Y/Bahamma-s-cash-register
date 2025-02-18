@@ -352,7 +352,49 @@
         listItem.setAttribute('data-item', item);
         listItem.setAttribute('data-quantity', 1);
         listItem.textContent = `1x ${item}`;
+        listItem.appendChild(createRemoveButton(item));
         historyList.appendChild(listItem);
+      }
+
+      // Reapply discount if any
+      if (currentDiscountType) {
+        reapplyDiscount();
+      }
+    }
+
+    function createRemoveButton(item) {
+      const removeButton = document.createElement('button');
+      removeButton.textContent = 'Remove';
+      removeButton.style.marginLeft = '10px';
+      removeButton.style.backgroundColor = '#ff0000';
+      removeButton.style.color = '#ffffff';
+      removeButton.style.border = 'none';
+      removeButton.style.borderRadius = '5px';
+      removeButton.style.cursor = 'pointer';
+      removeButton.onclick = () => removeItem(item);
+      return removeButton;
+    }
+
+    function removeItem(item) {
+      const display = document.getElementById('display');
+      const currentTotal = parseFloat(display.value.replace('$', '')) || 0;
+      const itemPrice = prices[item];
+      const newTotal = currentTotal - itemPrice;
+      display.value = `$${roundUp(newTotal)}`;
+
+      // Remove item from history
+      const historyList = document.getElementById('historyList');
+      const existingItem = document.querySelector(`#historyList li[data-item="${item}"]`);
+
+      if (existingItem) {
+        const quantity = parseInt(existingItem.getAttribute('data-quantity')) - 1;
+        if (quantity > 0) {
+          existingItem.setAttribute('data-quantity', quantity);
+          existingItem.textContent = `${quantity}x ${item}`;
+          existingItem.appendChild(createRemoveButton(item));
+        } else {
+          historyList.removeChild(existingItem);
+        }
       }
 
       // Reapply discount if any
