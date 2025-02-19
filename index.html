@@ -236,6 +236,7 @@
         <button class="btn" onclick="applyDiscount('SAMS')">SAMS<br>(0%)</button>
         <button class="btn" onclick="applyDiscount('SASP')">SASP<br>(0%)</button>
         <button class="btn" onclick="applyDiscount('BCSO')">BCSO<br>(0%)</button>
+        <button class="btn" onclick="applyDiscount('SAPR')">SAPR<br>(0%)</button>
       </div>
       <div class="discount-message" id="discountMessage"></div>
       <div class="categories">
@@ -262,6 +263,7 @@
             <button class="btn" onclick="addItem('Lemon Tea')">🍋 Lemon Tea</button>
             <button class="btn" onclick="addItem('Coffee')">☕ Coffee</button>
             <button class="btn" onclick="addItem('Rainbow Slushie')">🍧 Rainbow Slushie</button>
+            <button class="btn" onclick="addItem('Titty Milk')">🥛 Titty Milk (Vegan)</button>
           </div>
         </div>
         <div class="category">
@@ -309,14 +311,16 @@
       'Sex on the Erik': 115,
       'Essence of Sammy': 75,
       'Choco strawberries': 30,
-      'V-day Cupcakes': 30
+      'V-day Cupcakes': 30,
+      'Titty Milk': 30
     };
 
     const discounts = {
       'DOC': 0,
       'SAMS': 0,
       'SASP': 0,
-      'BCSO': 0
+      'BCSO': 0,
+      'SAPR': 0
     };
 
     let currentDiscountType = null;
