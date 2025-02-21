@@ -216,6 +216,14 @@
         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
       }
     }
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .history-item span {
+      flex-grow: 1;
+    }
   </style>
 </head>
 <body>
@@ -338,34 +346,38 @@
     }
 
     function addItem(item) {
-      const display = document.getElementById('display');
-      const currentTotal = parseFloat(display.value.replace('$', '')) || 0;
-      const itemPrice = prices[item];
-      display.value = `$${roundUp(currentTotal + itemPrice)}`;
+    const display = document.getElementById('display');
+    const currentTotal = parseFloat(display.value.replace('$', '')) || 0;
+    const itemPrice = prices[item];
+    display.value = `$${roundUp(currentTotal + itemPrice)}`;
 
-      // Add item to history
-      const historyList = document.getElementById('historyList');
-      const existingItem = document.querySelector(`#historyList li[data-item="${item}"]`);
+    // Add item to history
+    const historyList = document.getElementById('historyList');
+    const existingItem = document.querySelector(`#historyList li[data-item="${item}"]`);
 
-      if (existingItem) {
-        const quantity = parseInt(existingItem.getAttribute('data-quantity')) + 1;
-        existingItem.setAttribute('data-quantity', quantity);
-        existingItem.textContent = `${quantity}x ${item}`;
-        existingItem.appendChild(createRemoveButton(item));
-      } else {
-        const listItem = document.createElement('li');
-        listItem.setAttribute('data-item', item);
-        listItem.setAttribute('data-quantity', 1);
-        listItem.textContent = `1x ${item}`;
-        listItem.appendChild(createRemoveButton(item));
-        historyList.appendChild(listItem);
-      }
+    if (existingItem) {
+      const quantity = parseInt(existingItem.getAttribute('data-quantity')) + 1;
+      existingItem.setAttribute('data-quantity', quantity);
+      existingItem.querySelector('span').textContent = `${quantity}x ${item}`;
+    } else {
+      const listItem = document.createElement('li');
+      listItem.setAttribute('data-item', item);
+      listItem.setAttribute('data-quantity', 1);
+      listItem.classList.add('history-item');
 
-      // Reapply discount if any
-      if (currentDiscountType) {
-        reapplyDiscount();
-      }
+      const itemText = document.createElement('span');
+      itemText.textContent = `1x ${item}`;
+      listItem.appendChild(itemText);
+
+      listItem.appendChild(createRemoveButton(item));
+      historyList.appendChild(listItem);
     }
+
+    // Reapply discount if any
+    if (currentDiscountType) {
+      reapplyDiscount();
+    }
+  }
 
     function createRemoveButton(item) {
       const removeButton = document.createElement('button');
@@ -395,8 +407,7 @@
         const quantity = parseInt(existingItem.getAttribute('data-quantity')) - 1;
         if (quantity > 0) {
           existingItem.setAttribute('data-quantity', quantity);
-          existingItem.textContent = `${quantity}x ${item}`;
-          existingItem.appendChild(createRemoveButton(item));
+          existingItem.querySelector('span').textContent = `${quantity}x ${item}`;
         } else {
           historyList.removeChild(existingItem);
         }
